@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "claude-efficiency-tools": {
+      "command": "uv",
+      "args": ["run", "server", "main", "stdio"],
+      "env": {
+        "PYTHONPATH": "."
+      }
+    }
+  }
+}

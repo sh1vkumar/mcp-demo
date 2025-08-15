@@ -1,250 +1,286 @@
-# Basic MCP Server Implementation
+# Claude Efficiency Tools - MCP Server
 
-A simple implementation of a Model Context Protocol (MCP) server that demonstrates core MCP concepts and functionality.
+A comprehensive MCP (Model Context Protocol) server that provides Claude with powerful day-to-day efficiency tools for improved productivity and workflow automation.
 
-## Overview
+## 🚀 Features
 
-This project showcases a basic MCP server implementation that provides:
-- Simple tool registration and execution
-- Resource management
-- Prompt templates
-- Basic logging and error handling
+### File & Project Management
+- **List Files**: Browse directories with pattern matching
+- **Search Files**: Find files containing specific text
+- **Create Files**: Generate new files with content
+- **Project Info**: Get comprehensive project information
 
-The Model Context Protocol (MCP) is an open protocol that enables secure connections between host applications (like Claude Desktop, IDEs, or other AI tools) and external data sources and tools.
+### System & Environment Tools
+- **System Info**: Get detailed system information
+- **Run Commands**: Execute shell commands safely
+- **Environment Variables**: Access and manage environment variables
 
-## Features
+### Time & Scheduling
+- **Current Time**: Get detailed time information
+- **Time Calculations**: Calculate time differences and durations
 
-- **Tools**: Demonstrates basic tool implementation with input validation
-- **Resources**: Shows how to expose external resources through MCP
-- **Prompts**: Includes example prompt templates
-- **Error Handling**: Proper error responses and logging
-- **Type Safety**: Full TypeScript implementation with proper typing
+### Text Processing
+- **Word Count**: Analyze text with detailed statistics
+- **Text Formatting**: Clean, format, and transform text
+- **Data Conversion**: Convert between JSON formats
 
-## Prerequisites
+### Claude-Specific Prompts
+- **Code Review**: Generate comprehensive code review prompts
+- **Documentation**: Create documentation prompts for any code
+- **Debugging**: Get debugging assistance prompts
+- **Optimization**: Generate performance optimization prompts
 
-- Node.js 18+ 
-- npm or yarn
-- TypeScript (for development)
+### Resources
+- **File Content**: Access file contents as resources
+- **Project Information**: Get project metadata and files
 
-## Installation
+## 📦 Installation
 
-1. Clone the repository:
-```bash
-git clone <repository-url>
-cd mcp-server-basic
+1. **Install Dependencies**:
+   ```bash
+   uv sync
+   ```
+
+2. **Run the Server**:
+   ```bash
+   uv run server main stdio
+   ```
+
+## 🔧 Usage with Claude
+
+### Basic Setup
+
+1. **Start the MCP Server**:
+   ```bash
+   uv run server main stdio
+   ```
+
+2. **Connect Claude to the Server**:
+   - Use Claude Desktop or Claude Web with MCP support
+   - Configure the server connection in your Claude client
+   - The server will provide all tools and resources to Claude
+
+### Example Workflows
+
+#### 1. Project Analysis
+```
+Claude can now:
+- List all files in your project
+- Search for specific code patterns
+- Get project metadata
+- Analyze code structure
 ```
 
-2. Install dependencies:
-```bash
-npm install
+#### 2. Code Review & Documentation
+```
+Claude can:
+- Review code files automatically
+- Generate documentation
+- Suggest improvements
+- Create optimization recommendations
 ```
 
-3. Build the project:
-```bash
-npm run build
+#### 3. File Management
+```
+Claude can:
+- Create new files with content
+- Search through existing files
+- Organize project structure
+- Manage configuration files
 ```
 
-## Usage
-
-### Running the Server
-
-Start the MCP server in stdio mode:
-```bash
-npm start
+#### 4. System Operations
+```
+Claude can:
+- Get system information
+- Run commands safely
+- Check environment variables
+- Monitor system status
 ```
 
-Or run in development mode with auto-reload:
-```bash
-npm run dev
+## 🛠️ Available Tools
+
+### File Management Tools
+
+#### `list_files`
+Lists files in a directory with optional pattern matching.
+```python
+list_files(directory=".", pattern="*.py")
 ```
 
-### Connecting to Claude Desktop
-
-Add the following configuration to your Claude Desktop config file:
-
-**macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
-**Windows**: `%APPDATA%/Claude/claude_desktop_config.json`
-
-```json
-{
-  "mcpServers": {
-    "basic-mcp-server": {
-      "command": "node",
-      "args": ["path/to/your/server/dist/index.js"],
-      "env": {}
-    }
-  }
-}
+#### `search_files`
+Search for files containing specific text.
+```python
+search_files(directory=".", query="def main", file_type="*.py")
 ```
 
-## Project Structure
-
-```
-├── src/
-│   ├── index.ts          # Main server entry point
-│   ├── tools/            # Tool implementations
-│   │   ├── calculator.ts # Example calculator tool
-│   │   └── filesystem.ts # File system operations
-│   ├── resources/        # Resource handlers
-│   │   └── files.ts      # File resource management
-│   ├── prompts/          # Prompt templates
-│   │   └── templates.ts  # Example prompt templates
-│   └── types/            # TypeScript type definitions
-│       └── mcp.ts        # MCP-specific types
-├── dist/                 # Compiled JavaScript
-├── package.json
-├── tsconfig.json
-└── README.md
+#### `create_file`
+Create a new file with specified content.
+```python
+create_file(file_path="new_script.py", content="# New Python script", overwrite=False)
 ```
 
-## Available Tools
+### System Tools
 
-### Calculator Tool
-Performs basic arithmetic operations.
-
-**Usage Example**:
-```json
-{
-  "name": "calculator",
-  "arguments": {
-    "operation": "add",
-    "a": 10,
-    "b": 5
-  }
-}
+#### `get_system_info`
+Get comprehensive system information.
+```python
+get_system_info()
 ```
 
-### File System Tool
-Basic file operations like reading and writing files.
-
-**Usage Example**:
-```json
-{
-  "name": "read_file",
-  "arguments": {
-    "path": "./example.txt"
-  }
-}
+#### `run_command`
+Execute shell commands safely.
+```python
+run_command(command="ls -la", working_directory=".")
 ```
 
-## Available Resources
-
-### File Resources
-Exposes files from specified directories as MCP resources.
-
-**Resource URI Format**: `file://path/to/file.txt`
-
-## Available Prompts
-
-### Code Review Template
-A prompt template for code review assistance.
-
-**Prompt Name**: `code_review`
-**Arguments**: `code`, `language`, `focus_areas`
-
-## API Reference
-
-### Core MCP Methods
-
-The server implements the following MCP protocol methods:
-
-- `initialize` - Server initialization
-- `tools/list` - List available tools
-- `tools/call` - Execute a tool
-- `resources/list` - List available resources  
-- `resources/read` - Read resource content
-- `prompts/list` - List available prompts
-- `prompts/get` - Get prompt template
-
-### Error Handling
-
-The server returns standardized MCP error responses:
-
-```json
-{
-  "error": {
-    "code": -32602,
-    "message": "Invalid params",
-    "data": "Additional error context"
-  }
-}
+#### `get_environment_variable`
+Get environment variable values.
+```python
+get_environment_variable(name="PATH")
 ```
 
-## Development
+### Time Tools
 
-### Running Tests
-```bash
-npm test
+#### `get_current_time`
+Get current time and date information.
+```python
+get_current_time(timezone="local")
 ```
 
-### Linting
-```bash
-npm run lint
+#### `calculate_time_difference`
+Calculate time differences.
+```python
+calculate_time_difference(start_time="2024-01-01T10:00:00", end_time="2024-01-01T18:00:00")
 ```
 
-### Type Checking
-```bash
-npm run type-check
+### Text Processing Tools
+
+#### `count_words`
+Analyze text with detailed statistics.
+```python
+count_words(text="Your text here")
 ```
 
-### Building
-```bash
-npm run build
+#### `format_text`
+Format text in various ways.
+```python
+format_text(text="your text", format_type="clean")
 ```
 
-## Configuration
-
-Environment variables and configuration options:
-
-- `LOG_LEVEL`: Set logging level (debug, info, warn, error)
-- `MAX_FILE_SIZE`: Maximum file size for file operations (default: 10MB)
-- `ALLOWED_PATHS`: Comma-separated list of allowed file paths
-
-## Troubleshooting
-
-### Common Issues
-
-1. **Server not starting**: Check Node.js version and dependencies
-2. **Tool execution failures**: Verify input parameters match expected schema
-3. **Permission errors**: Ensure proper file system permissions
-4. **Connection issues**: Verify Claude Desktop configuration
-
-### Debug Mode
-
-Enable debug logging by setting:
-```bash
-LOG_LEVEL=debug npm start
+#### `convert_data`
+Convert data between formats.
+```python
+convert_data(data='{"key": "value"}', from_format="json", to_format="compact_json")
 ```
 
-## Contributing
+## 📝 Claude Prompts
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests for new functionality
-5. Submit a pull request
+### Code Review Prompt
+```python
+code_review_prompt(file_path="main.py", focus_areas="security,performance")
+```
 
-### Code Style
+### Documentation Prompt
+```python
+documentation_prompt(code_content="def example(): pass", doc_type="function")
+```
 
-This project uses:
-- ESLint for linting
-- Prettier for code formatting
-- TypeScript for type safety
+### Debugging Prompt
+```python
+debugging_prompt(error_message="ImportError: No module named 'xyz'", code_context="import xyz")
+```
 
-## License
+### Optimization Prompt
+```python
+optimization_prompt(code_content="your code here", optimization_goal="performance")
+```
 
-MIT License - see LICENSE file for details.
+## 🔗 Resources
 
-## Resources
+### File Content Resource
+Access file contents directly:
+```
+file://path/to/your/file.py
+```
 
-- [MCP Specification](https://spec.modelcontextprotocol.io/)
-- [Claude Desktop MCP Guide](https://docs.anthropic.com/en/docs/build-with-claude/computer-use)
-- [TypeScript MCP SDK](https://github.com/modelcontextprotocol/typescript-sdk)
+### Project Information Resource
+Get project metadata:
+```
+project://your-project-name
+```
 
-## Changelog
+## 🎯 Day-to-Day Efficiency Use Cases
 
-### v1.0.0
-- Initial implementation
-- Basic tools, resources, and prompts
-- TypeScript support
-- Error handling and logging
+### 1. **Code Development**
+- Automatically review new code
+- Generate documentation
+- Find similar code patterns
+- Optimize performance
+
+### 2. **Project Management**
+- Analyze project structure
+- Search for specific implementations
+- Create new files and templates
+- Monitor project health
+
+### 3. **System Administration**
+- Check system status
+- Run maintenance commands
+- Monitor environment variables
+- Troubleshoot issues
+
+### 4. **Content Creation**
+- Analyze text content
+- Format documents
+- Convert data formats
+- Generate reports
+
+### 5. **Time Management**
+- Track time spent on tasks
+- Calculate project durations
+- Schedule reminders
+- Analyze productivity patterns
+
+## 🔒 Security Considerations
+
+- The `run_command` tool has a 30-second timeout
+- File operations are restricted to the current working directory
+- Environment variable access is read-only
+- All operations include error handling
+
+## 🚀 Getting Started
+
+1. **Clone or download this project**
+2. **Install dependencies**: `uv sync`
+3. **Start the server**: `uv run server main stdio`
+4. **Connect Claude to the server**
+5. **Start using the tools!**
+
+## 📚 Examples
+
+### Example 1: Project Analysis
+```
+User: "Analyze my current project structure and suggest improvements"
+Claude: [Uses list_files, search_files, and project resources to provide comprehensive analysis]
+```
+
+### Example 2: Code Review
+```
+User: "Review the main.py file for security issues"
+Claude: [Uses code_review_prompt and file resources to provide detailed security analysis]
+```
+
+### Example 3: File Management
+```
+User: "Create a new configuration file for my project"
+Claude: [Uses create_file and project resources to generate appropriate configuration]
+```
+
+## 🤝 Contributing
+
+Feel free to extend this server with additional tools and resources that would be useful for your workflow!
+
+## 📄 License
+
+This project is open source and available under the MIT License.
